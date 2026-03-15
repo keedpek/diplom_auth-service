@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS roles (
+    id SMALLSERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT
+);
