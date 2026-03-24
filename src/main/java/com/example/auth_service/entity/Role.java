@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Table(name = "roles")
 @Getter
 @Setter
-@Table(name = "roles")
 public class Role {
 
   @Id
@@ -19,6 +19,6 @@ public class Role {
   @Column(unique = true, nullable = false)
   private RoleTypes name;
 
-  @Column()
+  @Column
   private String description;
 }

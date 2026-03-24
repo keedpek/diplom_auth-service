@@ -4,8 +4,8 @@ import com.example.auth_service.DTO.AuthResponse;
 import com.example.auth_service.DTO.LoginRequest;
 import com.example.auth_service.DTO.RegisterRequest;
 import com.example.auth_service.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,16 +18,16 @@ public class AuthController {
   private AuthService authService;
 
   @PostMapping("register")
-  public ResponseEntity<AuthResponse> register(
-          @RequestBody RegisterRequest registerRequest
+  public AuthResponse register(
+          @Valid @RequestBody RegisterRequest registerRequest
   ) {
-    return ResponseEntity.ok(authService.register(registerRequest));
+    return authService.register(registerRequest);
   }
 
   @PostMapping("login")
-  public ResponseEntity<AuthResponse> login(
-          @RequestBody LoginRequest loginRequest
+  public AuthResponse login(
+          @Valid @RequestBody LoginRequest loginRequest
   ) {
-    return ResponseEntity.ok(authService.login(loginRequest));
+    return authService.login(loginRequest);
   }
 }

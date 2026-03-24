@@ -12,10 +12,13 @@ import java.util.UUID;
 @Table(name = "users")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
   @Id
-  @GeneratedValue()
+  @GeneratedValue
   private UUID id;
 
   @Column(unique = true, nullable = false)
@@ -27,11 +30,11 @@ public class User {
   @Column(nullable = false)
   private LocalDateTime createdAt;
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(
-          name = "user_roles",
-          joinColumns = @JoinColumn(name = "user_id"),
-          inverseJoinColumns = @JoinColumn(name = "role_id")
-  )
-  private Set<Role> roles = new HashSet<>();
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<UserRole> userRoles = new HashSet<>();
+
+  public void addRole(Role role) {
+    UserRole userRole = new UserRole(this, role);
+    userRoles.add(userRole);
+  }
 }

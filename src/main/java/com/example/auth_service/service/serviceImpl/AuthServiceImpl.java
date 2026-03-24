@@ -9,7 +9,7 @@ import com.example.auth_service.enums.RoleTypes;
 import com.example.auth_service.exceptions.IncorrectPasswordException;
 import com.example.auth_service.exceptions.PasswordConfirmException;
 import com.example.auth_service.exceptions.UserAlreadyExistsException;
-import com.example.auth_service.exceptions.UserNotFoundException;
+import com.example.auth_service.exceptions.NotFoundException;
 import com.example.auth_service.repository.RoleRepository;
 import com.example.auth_service.repository.UserRepository;
 import com.example.auth_service.service.AuthService;
@@ -40,16 +40,18 @@ public class AuthServiceImpl implements AuthService {
       throw new PasswordConfirmException("Пароли не совпадают");
     }
 
-    User user = new User();
-    user.setEmail(registerRequest.getEmail());
-    user.setHashedPassword(passwordEncoder.encode(registerRequest.getPassword()));
-    user.setCreatedAt(LocalDateTime.now());
+    User user = User.builder()
+            .id(UUID.randomUUID())
+            .email(registerRequest.getEmail())
+            .hashedPassword(passwordEncoder.encode(registerRequest.getPassword()))
+            .createdAt(LocalDateTime.now())
+            .build();
 
     Role role = roleRepository
             .findByName(RoleTypes.EMPLOYEE)
-            .orElseThrow(() -> new RuntimeException("Роль не найдена"));
+            .orElseThrow(() -> new NotFoundException("Роль не найдена"));
 
-    user.getRoles().add(role);
+    user.addRole(role);
 
     return addTokensToUser(userRepository.save(user));
   }
@@ -58,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
   public AuthResponse login(LoginRequest loginRequest) {
     User user = userRepository
             .findByEmail(loginRequest.getEmail())
-            .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+            .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
 
     if (!passwordEncoder.matches(loginRequest.getPassword(), user.getHashedPassword())) {
       throw new IncorrectPasswordException("Неверный пароль");
@@ -67,11 +69,11 @@ public class AuthServiceImpl implements AuthService {
     return addTokensToUser(user);
   }
 
-  AuthResponse addTokensToUser(User user) {
-    return new AuthResponse(
-            "access_token",
-            "refresh_token",
-            user.getId().toString()
-    );
+  private AuthResponse addTokensToUser(User user) {
+    return AuthResponse.builder()
+            .accessToken("access_token")
+            .refreshToken("refresh_token")
+            .userID(user.getEmail())
+            .build();
   }
 }
