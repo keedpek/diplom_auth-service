@@ -73,7 +73,7 @@ public class AuthServiceImpl implements AuthService {
     return AuthResponse.builder()
             .accessToken("access_token")
             .refreshToken("refresh_token")
-            .userID(user.getEmail())
+            .userID(user.getId().toString())
             .build();
   }
 }

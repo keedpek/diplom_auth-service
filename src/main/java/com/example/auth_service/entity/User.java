@@ -18,7 +18,6 @@ import java.util.UUID;
 public class User {
 
   @Id
-  @GeneratedValue
   private UUID id;
 
   @Column(unique = true, nullable = false)
@@ -30,6 +29,7 @@ public class User {
   @Column(nullable = false)
   private LocalDateTime createdAt;
 
+  @Builder.Default
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<UserRole> userRoles = new HashSet<>();
 
