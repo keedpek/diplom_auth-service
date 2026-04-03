@@ -9,9 +9,9 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.UUID;
 
-@Embeddable
 @Setter
 @Getter
+@Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRoleId implements Serializable {

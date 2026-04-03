@@ -2,13 +2,15 @@ package com.example.auth_service.entity;
 
 import com.example.auth_service.enums.RoleTypes;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Table(name = "roles")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "roles")
 public class Role {
 
   @Id

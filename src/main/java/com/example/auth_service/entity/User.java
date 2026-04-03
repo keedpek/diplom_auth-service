@@ -9,12 +9,12 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class User {
 
   @Id
