@@ -24,5 +24,15 @@ spring:
     baseline-on-migrate: true
     baseline-version: 0
 
+
 security:
   bcrypt-strength: 12
+
+logging:
+  level:
+    root: info
+    com.example: debug
+    org.springframework: warn
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
